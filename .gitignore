@@ -19,9 +19,3 @@
 
 # Go workspace file
 go.work
-
-# Dotenv file
-.env
-
-# ProcessList.json
-processList.json
