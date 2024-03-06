@@ -1,0 +1,16 @@
+[
+    {
+        "processName": "dwm.exe",
+        "details": "chilling",
+        "state": "while listening to cool music",
+        "largeImageKey": "chill",
+        "largeImageText": "how's your day?",
+        "smallImageKey": "",
+        "smallImageText": "",
+        "buttons": [{
+            "text": "check out cool music",
+            "url": "https://open.spotify.com/playlist/2Yt8ACA7NOwOcnaDtAD2IH?si=49ac5b8de98f453e"
+        }],
+        "useTimestamp": false
+    }
+]
