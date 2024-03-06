@@ -30,6 +30,8 @@ type ActivityButtons struct {
 }
 
 func SetActivity(currentHighestIndex *int, processes []ProcessToWatch) {
+	lastHighest := *currentHighestIndex
+
 	for i := range len(processes) {
 		out, err := exec.Command("tasklist", "/fi", fmt.Sprintf(`IMAGENAME eq %v`, processes[i].ProcessName)).Output()
 		if err != nil {
@@ -38,7 +40,7 @@ func SetActivity(currentHighestIndex *int, processes []ProcessToWatch) {
 		}
 		if string(out[:5]) == "INFO:" {
 			continue
-		} else if *currentHighestIndex > i {
+		} else {
 			*currentHighestIndex = i
 			break
 		}
@@ -61,6 +63,9 @@ func SetActivity(currentHighestIndex *int, processes []ProcessToWatch) {
 		})
 	}
 	if processInfo.UseTimestamp {
+		if lastHighest == *currentHighestIndex {
+			return
+		}
 		now := time.Now()
 		newActivity.Timestamps = &client.Timestamps{
 			Start: &now,
