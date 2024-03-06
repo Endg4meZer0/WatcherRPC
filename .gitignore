@@ -21,4 +21,7 @@
 go.work
 
 # Dotenv file
-*.env
+.env
+
+# ProcessList.json
+processList.json
