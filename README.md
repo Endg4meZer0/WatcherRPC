@@ -1,5 +1,5 @@
 # WatcherRPC
-The Discord RPC client that watches the running processes!
+The Discord RPC client written in Go that watches the running processes!
 
 ![image](https://github.com/Endg4meZer0/WatcherRPC/assets/65147948/ffcf050f-b20c-432a-8921-2f60cd4d5b50)
 
@@ -15,8 +15,8 @@ It requires you to create your own app [here](https://discord.com/developers) an
 Check `processList.json`! Note that for images to work you also need to upload them at Discord Developers Portal in your app in Rich Presence's Art Assets menu, then you'll be able to use the image keys to actually set images for the game activity.
 ```json
 "processName": "StarRail.exe", // the process to watch for
-"state": "while listening to cool music", // for more info on the position
 "details": "building warrior Stelle", // check the screenshot at the top
+"state": "while listening to cool music", // for more info on the position of these elements
 "largeImageKey": "stelle",
 "largeImageText": "she's pretty",
 "smallImageKey": "",
@@ -31,4 +31,5 @@ Check `processList.json`! Note that for images to work you also need to upload t
 ## TODOs
 - [ ] A better interface than just an open console
 - [ ] Crossplatform solutions
-- [ ] More functionality maybe?
+- [ ] The ability to refresh the processes list without restarting the whole app
+- [ ] Other stuff?
