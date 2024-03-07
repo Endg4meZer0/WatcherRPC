@@ -6,6 +6,7 @@ import (
 	"log"
 	"os"
 	"os/exec"
+	"strings"
 	"time"
 
 	"github.com/hugolgst/rich-go/client"
@@ -29,22 +30,44 @@ type ActivityButtons struct {
 	Url  string
 }
 
+func ProcessCheck(currentHighestIndex *int, processes []ProcessToWatch) {
+	switch os.Getenv("GOOS") {
+	case "windows":
+		for i := range len(processes) {
+			out, err := exec.Command("tasklist", "/fi", fmt.Sprintf(`IMAGENAME eq %v`, processes[i].ProcessName)).Output()
+			if err != nil {
+				fmt.Printf("Warning: couldn't use the command \"tasklist\" for the process with the name of %v", processes[i].ProcessName)
+				continue
+			}
+			if string(out[:5]) == "INFO:" {
+				continue
+			} else {
+				*currentHighestIndex = i
+				break
+			}
+		}
+	case "linux":
+	case "darwin":
+		for i := range len(processes) {
+			out, err := exec.Command("ps", "-C", processes[i].ProcessName).Output()
+			if err != nil {
+				fmt.Printf("Warning: couldn't use the command \"ps\" for the process with the name of %v", processes[i].ProcessName)
+				continue
+			}
+			if len(strings.Split(string(out), "\n")) == 1 {
+				continue
+			} else {
+				*currentHighestIndex = i
+				break
+			}
+		}
+	}
+}
+
 func SetActivity(currentHighestIndex *int, processes []ProcessToWatch) {
 	lastHighest := *currentHighestIndex
 
-	for i := range len(processes) {
-		out, err := exec.Command("tasklist", "/fi", fmt.Sprintf(`IMAGENAME eq %v`, processes[i].ProcessName)).Output()
-		if err != nil {
-			fmt.Printf("Warning: couldn't use the command \"tasklist\" for the process with the name of %v", processes[i].ProcessName)
-			continue
-		}
-		if string(out[:5]) == "INFO:" {
-			continue
-		} else {
-			*currentHighestIndex = i
-			break
-		}
-	}
+	ProcessCheck(currentHighestIndex, processes)
 
 	processInfo := processes[*currentHighestIndex]
 	newActivity := client.Activity{
@@ -94,13 +117,14 @@ func main() {
 	currentHighestIndex := len(processes) + 1
 
 	err = client.Login(os.Getenv("CLIENT_ID"))
-	fmt.Println("hello world")
+	fmt.Println("Hello world!")
 
 	if err != nil {
 		log.Panicln("Error while connecting. Check the client id in your .env file")
 	}
 
 	SetActivity(&currentHighestIndex, processes)
+	fmt.Println("The activity is set. You're ready to go!")
 
 	ticker := time.NewTicker(30 * time.Second)
 	for range ticker.C {
