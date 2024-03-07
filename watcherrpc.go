@@ -79,7 +79,7 @@ func main() {
 			}
 		} else {
 			os.Remove("./.firstlaunch")
-			fmt.Println("Okay, but if you would want to make it start with your system later, start the executable from the cmd with --create-start-link flag.")
+			fmt.Println("Okay! If you ever want to do it tho, use --create-start-link flag.")
 		}
 	}
 
